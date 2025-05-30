@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Calaveras y diablitos por Santiago Estrada Sotelo</title>
+</head>
+<body>
+    
+    <div class="game-container">
+        <canvas id="game" class="canva"></canvas>
+
+        <div class="buttons-container">
+            <button id="up">↑</button>
+            <button id="left">←</button>
+            <button id="right">→</button>
+            <button id="down">↓</button>
+        </div>
+
+        <div class="messages">
+            <!-- TODO -->
+           <p>Vidas: <span id="lives"></span></p>
+            <p>Tiempo 🕰️: <span id="time"></span></p>
+             <p>Record 🏁: <span id="record"></span></p>
+             <p id="result"></p>
+        </div>
+    </div>
+
+    <script src="./main.js"></script>
+    <script src="./maps.js"></script>
+</body>
+</html>
