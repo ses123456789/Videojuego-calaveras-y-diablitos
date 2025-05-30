@@ -9,6 +9,11 @@ const spanlives = document.querySelector('#lives');
 const spantime = document.querySelector('#time');
 const spanrecord = document.querySelector('#record');
 const presult = document.querySelector('#result');
+const gameoverMessage = document.querySelector('#gameover-message');
+const finalMessage = document.querySelector('#final-message');
+const btnRestart = document.querySelector('#btn-restart');
+const btnResetRecord = document.querySelector('#btn-reset-record');
+
 
 let canvasSize;
 let elementsSize;
@@ -16,6 +21,8 @@ let nivel = 0;
 let lives = 4;
 let timeStart;
 let timeInterval;
+let gameEnded = false;
+
 
 const playerPosition = {
     row: undefined,
@@ -62,7 +69,7 @@ function startGame() {
 
     enemiesPositions = [];
 
-    if (!timeStart) {
+    if (!timeStart &&!gameEnded) {
         timeStart = Date.now();
         timeInterval = setInterval(showTime, 100);
         showRecord();
@@ -137,13 +144,16 @@ function levelfailed() {
 }
 
 function gameOver() {
-    nivel = 0;
     clearInterval(timeInterval);
+    gameEnded = true; // ← bloquea controles
 
-    if (lives > 0) {
-        getRecord();
-    }
+    const won = lives > 0;
+    finalMessage.innerHTML = won ? '🎉 ¡Ganaste la partida!' : '💀 Perdiste todas tus vidas.';
+    gameoverMessage.classList.remove('hidden');
 
+    if (won) getRecord();
+
+    nivel = 0;
     lives = 4;
     timeStart = undefined;
     playerPosition.row = undefined;
@@ -182,6 +192,8 @@ function showRecord() {
 }
 
 function moveByKeys(e) {
+    if (gameEnded) return;
+
     switch (e.key) {
         case "ArrowUp": moveUp(); break;
         case "ArrowDown": moveDown(); break;
@@ -189,6 +201,7 @@ function moveByKeys(e) {
         case "ArrowRight": moveRight(); break;
     }
 }
+
 
 function moveUp() {
     if (playerPosition.row > 0) {
@@ -217,3 +230,14 @@ function moveRight() {
         startGame();
     }
 }
+btnRestart.addEventListener('click', () => {
+    gameEnded = false;
+    gameoverMessage.classList.add('hidden');
+    startGame();
+});
+
+btnResetRecord.addEventListener('click', () => {
+    localStorage.removeItem('record_time');
+    spanrecord.innerHTML = '0.0';
+    presult.innerHTML = 'Récord eliminado.';
+});
